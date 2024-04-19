@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Побег от мрака</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/main_menu_style.css">
+    <link rel="stylesheet" type="text/css" href="css/ux_style.css">
+    <link rel="stylesheet" type="text/css" href="css/game_style.css">
+</head>
+<body>
+    <div id="inventory" class="hidden">
+        <h2 class="inventory_text">Инвентарь</h2>
+        <div class="itembox" data-index=0></div>
+        <div class="itembox" data-index=1></div>
+        <div class="itembox" data-index=2></div>
+        <div class="itembox" data-index=3></div>
+    </div>
+
+    <section id="main_menu">
+        <img class="background_img" src="../src/img/main_menu_bg.jpg">
+        <div id="mm_main" class="mm_container">
+            <h1 id="mm_item_game_start" class="mm_item">Начать игру</h1>
+            <h1 id="mm_item_settings" class="mm_item">Настройки</h1>
+            <h1 id="mm_item_authors" class="mm_item">Авторы</h1>
+        </div>
+        
+        <div id="mm_settings" class="mm_container hidden">
+            <h2 class="mm_text">Громкость звука</h2>
+            <input type="range" min="0" max="100" value="50" class="mm_slider" id="mm_sounds_level">
+            <h2 class="mm_text">Громкость музыки</h2>
+            <input type="range" min="0" max="100" value="50" class="mm_slider" id="mm_music_level">
+            <h1 class="mm_item mm_back">Назад</h1>
+        </div>
+        <div id="mm_authors" class="mm_container hidden">
+            <h2 class="mm_text">Вохрин Олег – разработчик, тимлид</h2>
+            <h2 class="mm_text">Комолов Тимур – дизайнер, технический писатель </h2>
+            <h2 class="mm_text">Хречко Сергей – тестировщик, верстальщик</h2>
+            <h1 class="mm_item mm_back">Назад</h1>
+        </div>
+    </section>
+
+    <section id="game" class="hidden">
+        <img class="background_img" src="../src/img/game_bg_1.jpg">
+
+    </section>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/main_menu_script.js"></script>
+</body>
+</html>
