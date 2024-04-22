@@ -11,13 +11,37 @@
     <link rel="stylesheet" type="text/css" href="css/game_style.css">
 </head>
 <body>
-    <div id="inventory" class="hidden">
+    <div id="inventory" class="game_ux_element hidden">
         <h2 class="inventory_text">Инвентарь</h2>
-        <div class="itembox" data-index=0></div>
+        <!--when there is something in the box, please add class .full-->
+        <div class="itembox full" data-index=0>exmpl</div>
         <div class="itembox" data-index=1></div>
         <div class="itembox" data-index=2></div>
         <div class="itembox" data-index=3></div>
+        <div id="game_text_opener" class="opened">
+            <svg width="64" height="40" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M56.5 7.75L32 32.25L7.5 7.75" stroke="black" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
     </div>
+
+    <div id="ingame_settings" class="game_ux_element hidden">
+        <div class="gs_button" id="music">
+            <svg width="60" height="75" viewBox="0 0 60 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.3333 63.5556C21.3333 67.6671 17.4531 71 12.6667 71C7.88021 71 4 67.6671 4 63.5556C4 59.444 7.88021 56.1111 12.6667 56.1111C17.4531 56.1111 21.3333 59.444 21.3333 63.5556ZM21.3333 63.5556V11.4444L56 4V56.1111M56 56.1111C56 60.2227 52.1199 63.5556 47.3333 63.5556C42.5467 63.5556 38.6667 60.2227 38.6667 56.1111C38.6667 51.9995 42.5467 48.6667 47.3333 48.6667C52.1199 48.6667 56 51.9995 56 56.1111ZM21.3333 26.3333L56 18.8889" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+                
+        </div>
+
+        <div class="gs_button" id="sound">
+            <svg width="60" height="75" viewBox="0 0 60 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.3333 63.5556C21.3333 67.6671 17.4531 71 12.6667 71C7.88021 71 4 67.6671 4 63.5556C4 59.444 7.88021 56.1111 12.6667 56.1111C17.4531 56.1111 21.3333 59.444 21.3333 63.5556ZM21.3333 63.5556V11.4444L56 4V56.1111M56 56.1111C56 60.2227 52.1199 63.5556 47.3333 63.5556C42.5467 63.5556 38.6667 60.2227 38.6667 56.1111C38.6667 51.9995 42.5467 48.6667 47.3333 48.6667C52.1199 48.6667 56 51.9995 56 56.1111ZM21.3333 26.3333L56 18.8889" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+                
+        </div>
+    </div>
+
+
 
     <section id="main_menu">
         <img class="background_img" src="../src/img/main_menu_bg.jpg">
@@ -42,13 +66,33 @@
         </div>
     </section>
 
+
+
     <section id="game" class="hidden">
         <img class="background_img" src="../src/img/game_bg_1.jpg">
 
+        <div id="game_text_container">
+            <div class="height_keeper"> <!--put stuff inside it, not near it-->
+                Вы просыпаетесь в темной комнате. Вы не помните, как здесь оказались. Вокруг вас ничего не видно, но вы слышите странные звуки. Вы должны выбраться отсюда.Вы просыпаетесь в темной комнате. Вы не помните, как здесь оказались. Вокруг вас ничего не видно, но вы слышите странные звуки. Вы должны выбраться отсюда.
+            </div>
+        </div>
+
+
+        <!--this is a fictional div just for storing items
+        when switching scenes you need to erase all items here and 
+        create the ones on the new scene. everything should be stored in script anyway-->
+        <div id="game_scene_active_items">
+            <!--here is an example item.  you can probably use
+                data-index, but if you don't need it, then delete data-index-->
+            <!--oh, and yeah, don't forget to calculate top and left correctly-->
+            <!--and, right, width and height is also on you, cause it's individual for every item-->
+            <img class="game_item" style="top: 300px; left: 500px; width: 100px; height: 100px;" src="../src/img/item_key.png" data-index=0>
+        </div>
     </section>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/main_menu_script.js"></script>
+    <script src="js/ux_script.js"></script>
 </body>
 </html>
