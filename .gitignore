@@ -1,2 +1,4 @@
 front/js/main.js
-front/js/engine
+front/js/engine/
+package-lock.json
+node_modules/

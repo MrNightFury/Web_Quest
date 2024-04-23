@@ -1,3 +1,1 @@
-function interact() {
-    console.log("asd");
-}
+function interact(n) {console.log('asd' + n);}

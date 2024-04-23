@@ -9,7 +9,12 @@
                 "item": "key"
             }
         }, {
-            "name": "text"
+            "name": "text",
+            "sprite": "text",
+            "interact": {
+                "type": "function",
+                "path": "test.js/interact"
+            }
         }
     ]
 }
