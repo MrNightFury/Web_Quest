@@ -1,0 +1,15 @@
+{
+    "name": "Start scene",
+    "objects": [
+        {
+            "name": "Key",
+            "sprite": "key",
+            "interact": {
+                "type": "take",
+                "item": "key"
+            }
+        }, {
+            "name": "text"
+        }
+    ]
+}
