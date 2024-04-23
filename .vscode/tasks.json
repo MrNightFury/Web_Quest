@@ -5,7 +5,7 @@
     "tasks": [
         {
 			"type": "typescript",
-			"tsconfig": "front/engineSrc/tsconfig.json",
+			"tsconfig": "front/src/tsconfig.json",
 			"problemMatcher": [
 				"$tsc"
 			],
