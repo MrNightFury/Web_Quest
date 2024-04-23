@@ -1,5 +1,5 @@
 .game_ux_element.hidden {
-  display: none;
+  display: none !important;
 }
 #inventory {
   width: 100%;
