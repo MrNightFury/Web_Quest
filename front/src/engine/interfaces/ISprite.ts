@@ -1,3 +1,4 @@
-export class ISprite {
-
+export interface Sprite {
+    path: string;
+    size: number;
 }

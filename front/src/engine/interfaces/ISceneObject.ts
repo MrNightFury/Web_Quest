@@ -1,18 +1,22 @@
-import { ISprite } from "./ISprite";
+import { Sprite } from "./ISprite";
+import { IPosition } from "./Position";
 
 export interface ISceneObject {
     name: string;
-    sprite: ISprite;
+    sprite: Sprite;
+    position: IPosition;
     interact: IInteract;
 }
 
 export enum InteractType {
     TAKE = "take",
-    FUNCTION = "function"
+    FUNCTION = "function",
+    TEXT = "text",
+    SCENE = "changeScene"
 }
 
 interface BaseInteract<T = InteractType> {
-    type: T
+    type: T,
 }
 interface functionInteract extends BaseInteract<InteractType.FUNCTION> {
     path: string;
@@ -20,5 +24,11 @@ interface functionInteract extends BaseInteract<InteractType.FUNCTION> {
 interface takeInteract extends BaseInteract<InteractType.TAKE> {
     item: string;
 }
+interface textInteract extends BaseInteract<InteractType.TEXT> {
+    text: string;
+}
+interface sceneInteract extends BaseInteract<InteractType.SCENE> {
+    sceneId: string;
+}
 
-export type IInteract = takeInteract | functionInteract;
+export type IInteract = takeInteract | functionInteract | textInteract | sceneInteract;

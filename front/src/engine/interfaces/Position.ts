@@ -1,5 +1,5 @@
 export interface IPosition {
     x: number;
     y: number;
-    zIndex: number;
+    zIndex?: number;
 }

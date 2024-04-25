@@ -1,19 +1,39 @@
 {
     "name": "Start scene",
+    "background": "startScene_bg.jpg",
+    "persistent": true,
     "objects": [
         {
-            "name": "Key",
-            "sprite": "key",
+            "name": "Door",
+            "sprite": {
+                "path": "items/door.png",
+                "size": 100
+            },
+            "position": {"x": 100, "y": 100},
             "interact": {
-                "type": "take",
-                "item": "key"
+                "type": "changeScene",
+                "sceneId": "testSeaScene"
             }
         }, {
             "name": "text",
-            "sprite": "text",
+            "sprite": {
+                "path": "items/button.png",
+                "size": 100
+            },
             "interact": {
                 "type": "function",
                 "path": "test.js/interact"
+            }
+        }, {
+            "name": "Key",
+            "sprite": {
+                "path": "items/key.png",
+                "size": 100
+            },
+            "position": { "x": 200, "y":200 },
+            "interact": {
+                "type": "take",
+                "item": "key"
             }
         }
     ]
