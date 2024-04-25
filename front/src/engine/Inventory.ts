@@ -3,11 +3,11 @@ import { FileType } from "./FileType.js";
 import { IItem } from "./interfaces/IItem";
 
 export class Inventory {
-    selectetItemIndex = -1;
+    selectedItemIndex = -1;
     items: (IItem | null)[] = new Array(null, null, null, null);
 
     get selectedItem() {
-        return this.items[this.selectetItemIndex];
+        return this.items[this.selectedItemIndex];
     }
 
     addItem(item: IItem) {
@@ -23,13 +23,13 @@ export class Inventory {
                 "height": "100px"
             })
             .on("click", () => {
-                if (this.selectetItemIndex != index) {
-                    this.selectetItemIndex = index;
-                    $(".game_item").removeClass("selected");
+                if (this.selectedItemIndex != index) {
+                    this.selectedItemIndex = index;
+                    $(".itembox").removeClass("selected");
                     $(`#inventory > [data-index=${index}]`).first().addClass("selected");
                 } else {
-                    this.selectetItemIndex = -1;
-                    $(".game_item").removeClass("selected");
+                    this.selectedItemIndex = -1;
+                    $(".itembox").removeClass("selected");
                 }
             });
         $(`#inventory > [data-index=${index}]`).first().addClass("full").append(sprite);
@@ -37,7 +37,12 @@ export class Inventory {
     }
 
     removeItem(index: number) {
+        console.log(index)
         this.items[index] = null;
         $(`#inventory > [data-index=${index}]`).first().removeClass("full").empty();
+        if (this.selectedItemIndex == index) {
+            this.selectedItemIndex = -1;
+            $(".itembox").removeClass("selected");
+        }
     }
 }

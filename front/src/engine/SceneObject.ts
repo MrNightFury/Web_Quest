@@ -9,7 +9,8 @@ export class SceneObject {
     sprite?: Sprite;
     name: string = "";
     position: IPosition = { x: 0, y: 0 };
-    interactCallback: Function = ()=>{};
+    interactCallback: Promise<Function | void>;
+    text = "";
 
     element?: JQuery<HTMLElement>;
 
@@ -17,54 +18,65 @@ export class SceneObject {
         // console.log(sceneObject)
         this.name = sceneObject.name;
         this.sprite = sceneObject.sprite;
+        this.text = sceneObject.text ?? "";
         this.position = sceneObject.position ?? this.position;
-        this.loadInteract(sceneObject.interact);
+        this.interactCallback = this.loadInteract(sceneObject.interact);
         // console.log(this.position);
     }
 
     async loadInteract(interact: IInteract) {
+        if (!interact) return;
         switch (interact.type) {
             case InteractType.FUNCTION:
                 let [scriptName, functionName] = interact.path.split('/');
-                this.interactCallback = await Controller.instance.getFunction(scriptName, functionName);
-                break;
+                return Controller.instance.getFunction(scriptName, functionName);
             case InteractType.TEXT:
-                this.interactCallback = () => console.log(interact.text);
-                break;
+                return () => console.log(interact.text);
             case InteractType.SCENE:
-                this.interactCallback = () => Controller.instance.loadScene(interact.sceneId);
-                break;
+                return () => Controller.instance.changeScene(interact.sceneId);
             case InteractType.TAKE:
-                this.interactCallback = function (this: SceneObject) {
-                    if (Controller.instance.inventory.addItem({ name: "Key", sprite: this.sprite ?? {path: "", size: 100}}) != -1){
+                return function (this: SceneObject) {
+                    if (Controller.instance.inventory.addItem({ name: this.name, sprite: this.sprite ?? {path: "", size: 100}}) != -1){
                         if (Controller.instance.currentScene)
                             Controller.instance.currentScene.objects = Controller.instance.currentScene?.objects.filter(object => object.name != this.name);
                         this.element?.remove();
                     }
                 }
-                break;
         }
         // this.interactCallback();
     }
 
     render() {
         // <img class="game_item" style="top: 300px; left: 500px; width: 100px; height: 100px;" src="../src/img/item_key.png" data-index=0>
-        let item: JQuery<HTMLElement>;
+        let item: JQuery<HTMLElement> = $(`<div class="game_item" id="game_item_${this.id}">`);
+        item.css({
+            top: this.position.y + "px",
+            left: this.position.x + "px",
+        })
         if (this.sprite){
-            item = $(`<img class='game_item' id="game_item_${this.id}">`);
-            item.css({
-                top: this.position.y + "px",
-                left: this.position.x + "px",
+            let img = $(`<img>`);
+            img.css({
                 width: "100px",
                 height: "100px"
             });
-            item.attr("src", Controller.instance.getPackFileAddress(FileType.IMAGE, this.sprite?.path));
-        } else {
-            item = $("<span>");
+            img.attr("src", Controller.instance.getPackFileAddress(FileType.IMAGE, this.sprite?.path));
+            item.append(img);
         }
-        item.on("click", () => {
-            this.interactCallback.bind(this)(Controller.instance.inventory.selectedItem);
+        //  else {
+        //     item.append($("<span>").html("Text"));
+        // }
+        if (this.text) {
+            item.append($("<span>").html(this.text));
+        }
+
+        this.interactCallback.then(callback => {
+            if (!callback) return;
+            item.css("cursor", "pointer");
+            item.on("click", () => {
+                callback.bind({...this, Controller: Controller.instance})(Controller.instance.inventory.selectedItem);
+            });
         });
+        
         this.element = item;
         return item;
     }

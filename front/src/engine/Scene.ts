@@ -45,6 +45,14 @@ export class Scene {
         }
     }
 
+    addObject(name: string) {
+        console.log(name);
+        Controller.instance.getPackFile(FileType.OBJECT, name).then(object => {
+            this.objects.push(new SceneObject(object))
+            $("#game_scene_active_items").append(this.objects[this.objects.length - 1].render());
+        })
+    }
+
     removeObject() {
         
     }

@@ -19,17 +19,17 @@ export class Controller {
         
         this.loadPackInfo().then(res => {
             $("#mm_item_game_start").on("click", () => {
-                this.loadScene();
+                this.changeScene();
             })
         });
-    } 
+    }
 
     /**
      * Saves current scene if needed and loads new scene
      * @param name scene file name without extension
      * @returns
      */
-    async loadScene(name?: string) {
+    async changeScene(name?: string) {
         if (!name) {
             if (!this.packInfo?.defaultScene) {
                 alert("Default scene didn't specified");
@@ -84,7 +84,7 @@ export class Controller {
      */
     async getPackFile(type: FileType, name?: string) {
         let path = name;
-        if (type == FileType.SCENE) {
+        if (type == FileType.SCENE || type == FileType.OBJECT) {
             path += ".json";
         }
         return await fetch(this.getPackFileAddress(type, path)).catch(err => {

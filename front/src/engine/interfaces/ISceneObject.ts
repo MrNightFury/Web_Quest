@@ -3,7 +3,8 @@ import { IPosition } from "./Position";
 
 export interface ISceneObject {
     name: string;
-    sprite: Sprite;
+    sprite?: Sprite;
+    text?: string;
     position: IPosition;
     interact: IInteract;
 }
