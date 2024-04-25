@@ -1,6 +1,6 @@
 export enum FileType {
     INFO = "pack.info",
-    IMAGE = "image",
+    IMAGE = "images",
     SCENE = "scene",
-    SCRIPT = "script"
+    SCRIPT = "scripts"
 }
