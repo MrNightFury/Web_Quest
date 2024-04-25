@@ -6,6 +6,7 @@ import { SceneObject } from "./SceneObject.js";
 export class Scene {
     id: string = "";
     name: string = "";
+    entryText: string;
     background: string = "";
     persistent: boolean;
     objects: SceneObject[] = [];
@@ -13,6 +14,7 @@ export class Scene {
     constructor(scene: IScene) {
         this.id = scene.id;
         this.name = scene.name;
+        this.entryText = scene.entryText ?? "";
         this.background = scene.background;
         this.persistent = scene.persistent;
         scene.objects.forEach((item) => {
@@ -29,7 +31,18 @@ export class Scene {
 
     render() {
         $("#game > .background_img").first().attr("src", Controller.instance.getPackFileAddress(FileType.IMAGE, this.background));
-        this.objects.forEach(item => $("#game_scene_active_items").append(item.render()))
+        this.objects.forEach(item => $("#game_scene_active_items").append(item.render()));
+        
+        $("#game_text_container > .height_keeper").html(this.entryText);
+        if (this.entryText) {
+            $("#game_text_container").removeClass("hidden");
+            window.gameTextResize();
+            $("#game_text_opener").addClass("opened");
+        } else {
+            $("#game_text_container").addClass("hidden");
+            window.gameTextResize();
+            $("#game_text_opener").removeClass("opened");
+        }
     }
 
     removeObject() {
