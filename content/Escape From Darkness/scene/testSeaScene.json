@@ -3,15 +3,27 @@
     "background": "testSeaScene_bg.jpg",
     "objects": [
         {
+            "name": "Door",
+            "sprite": {
+                "path": "items/door.png",
+                "size": 100
+            },
+            "position": {"x": 100, "y": 100},
+            "interact": {
+                "type": "changeScene",
+                "sceneId": "startScene"
+            }
+        }, {
             "name": "Key",
+            "text": "This is item on scene. You can take it with click.",
             "sprite": {
                 "path": "items/key.png",
                 "size": 100
             },
-            "position": { "x": 100, "y": 100 },
+            "position": { "x": 200, "y":200 },
             "interact": {
-                "type": "changeScene",
-                "sceneId": "startScene"
+                "type": "function",
+                "path": "tutorial.js/tutorial1"
             }
         }
     ]

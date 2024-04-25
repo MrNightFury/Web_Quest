@@ -1,4 +1,4 @@
 {
     "name": "Escape From Darkness",
-    "defaultScene": "startScene"
+    "defaultScene": "testSeaScene"
 }

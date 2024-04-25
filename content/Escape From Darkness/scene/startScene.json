@@ -1,6 +1,7 @@
 {
     "name": "Start scene",
     "background": "startScene_bg.jpg",
+    "entryText": "Вы просыпаетесь в темной комнате. Вы не помните, как здесь оказались. Вокруг вас ничего не видно, но вы слышите странные звуки. Вы должны выбраться отсюда.Вы просыпаетесь в темной комнате. Вы не помните, как здесь оказались. Вокруг вас ничего не видно, но вы слышите странные звуки. Вы должны выбраться отсюда.",
     "persistent": true,
     "objects": [
         {
@@ -16,24 +17,10 @@
             }
         }, {
             "name": "text",
-            "sprite": {
-                "path": "items/button.png",
-                "size": 100
-            },
+            "text": "Some text for tooltip",
             "interact": {
                 "type": "function",
                 "path": "test.js/interact"
-            }
-        }, {
-            "name": "Key",
-            "sprite": {
-                "path": "items/key.png",
-                "size": 100
-            },
-            "position": { "x": 200, "y":200 },
-            "interact": {
-                "type": "take",
-                "item": "key"
             }
         }
     ]

@@ -1,3 +1,3 @@
 function interact(item) {
-    console.log(item);
+    console.log(this.Controller.inventory)
 }
