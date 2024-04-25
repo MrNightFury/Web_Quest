@@ -35,11 +35,16 @@
         width: 141px;
         height: 141px;
         border: 8px dashed #FFFFFF;
+        transition: all 0.3s ease;
         &.full{
             cursor: pointer;
             &:hover{
                 box-shadow: 0 0 10px 5px #FFFFFF1A;
             }
+        }
+        &.selected{
+            border-color: rgb(6, 185, 6);
+            background-color: #FFFFFF1A;
         }
     }
 

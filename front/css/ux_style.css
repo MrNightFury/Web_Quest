@@ -26,12 +26,17 @@
   width: 141px;
   height: 141px;
   border: 8px dashed #FFFFFF;
+  transition: all 0.3s ease;
 }
 #inventory .itembox.full {
   cursor: pointer;
 }
 #inventory .itembox.full:hover {
   box-shadow: 0 0 10px 5px #FFFFFF1A;
+}
+#inventory .itembox.selected {
+  border-color: #06b906;
+  background-color: #FFFFFF1A;
 }
 #inventory #game_text_opener {
   width: 100px;
