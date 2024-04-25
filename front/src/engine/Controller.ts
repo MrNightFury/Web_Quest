@@ -2,6 +2,7 @@ import { Scene } from "./Scene.js";
 import { IPackInfo } from "./interfaces/IPackInfo.js"
 import { FileType } from "./FileType.js";
 import { IScene } from "./interfaces/IScene.js";
+import { Inventory } from "./Inventory.js";
 
 export class Controller {
     static instance = new Controller();
@@ -10,6 +11,7 @@ export class Controller {
     packInfo?: IPackInfo;
     currentScene?: Scene;
 
+    inventory = new Inventory();
     savedScenes: Scene[] = [];
 
     setPack(name: string) {
@@ -45,7 +47,7 @@ export class Controller {
         if (scene) {
             this.currentScene = scene;
         } else {
-            this.currentScene = new Scene(await this.getPackFile(FileType.SCENE, `${name}`) as IScene);
+            this.currentScene = new Scene(await this.getPackFile(FileType.SCENE, name) as IScene);
         }
         
         this.clearWindow();

@@ -36,9 +36,11 @@ export class SceneObject {
                 break;
             case InteractType.TAKE:
                 this.interactCallback = function (this: SceneObject) {
-                    if (Controller.instance.currentScene)
-                        Controller.instance.currentScene.objects = Controller.instance.currentScene?.objects.filter(object => object.name != this.name);
-                    this.element?.remove();
+                    if (Controller.instance.inventory.addItem({ name: "Key", sprite: this.sprite ?? {path: "", size: 100}}) != -1){
+                        if (Controller.instance.currentScene)
+                            Controller.instance.currentScene.objects = Controller.instance.currentScene?.objects.filter(object => object.name != this.name);
+                        this.element?.remove();
+                    }
                 }
                 break;
         }
@@ -61,7 +63,7 @@ export class SceneObject {
             item = $("<span>");
         }
         item.on("click", () => {
-            this.interactCallback.bind(this)();
+            this.interactCallback.bind(this)(Controller.instance.inventory.selectedItem);
         });
         this.element = item;
         return item;
