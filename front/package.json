@@ -1,0 +1,7 @@
+{
+  "name": "web_quest",
+  "devDependencies": {
+    "@types/jquery": "^3.5.29",
+    "typedoc": "^0.25.13"
+  }
+}

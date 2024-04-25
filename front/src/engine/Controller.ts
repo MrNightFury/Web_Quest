@@ -22,6 +22,11 @@ export class Controller {
         });
     } 
 
+    /**
+     * Saves current scene if needed and loads new scene
+     * @param name scene file name without extension
+     * @returns
+     */
     async loadScene(name?: string) {
         if (!name) {
             if (!this.packInfo?.defaultScene) {

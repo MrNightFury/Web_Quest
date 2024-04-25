@@ -15,19 +15,19 @@ export enum InteractType {
     SCENE = "changeScene"
 }
 
-interface BaseInteract<T = InteractType> {
+export interface BaseInteract<T = InteractType> {
     type: T,
 }
-interface functionInteract extends BaseInteract<InteractType.FUNCTION> {
+export interface functionInteract extends BaseInteract<InteractType.FUNCTION> {
     path: string;
 }
-interface takeInteract extends BaseInteract<InteractType.TAKE> {
+export interface takeInteract extends BaseInteract<InteractType.TAKE> {
     item: string;
 }
-interface textInteract extends BaseInteract<InteractType.TEXT> {
+export interface textInteract extends BaseInteract<InteractType.TEXT> {
     text: string;
 }
-interface sceneInteract extends BaseInteract<InteractType.SCENE> {
+export interface sceneInteract extends BaseInteract<InteractType.SCENE> {
     sceneId: string;
 }
 
