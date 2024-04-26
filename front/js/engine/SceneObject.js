@@ -61,8 +61,8 @@ export class SceneObject {
         if (this.sprite) {
             let img = $(`<img>`);
             img.css({
-                width: "100px",
-                height: "100px"
+                width: typeof this.sprite.size == "object" ? this.sprite.size.x : "100px",
+                height: typeof this.sprite.size == "object" ? this.sprite.size.y : "100px"
             });
             img.attr("src", Controller.instance.getPackFileAddress(FileType.IMAGE, (_a = this.sprite) === null || _a === void 0 ? void 0 : _a.path));
             item.append(img);
@@ -71,7 +71,7 @@ export class SceneObject {
         //     item.append($("<span>").html("Text"));
         // }
         if (this.text) {
-            item.append($("<span class='gi_text'>").html(this.text));
+            item.append($("<span class='gi_text'>").css({ width: "300px" }).html(this.text));
         }
         this.interactCallback.then(callback => {
             if (!callback)

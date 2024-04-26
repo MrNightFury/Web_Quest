@@ -1,8 +1,8 @@
 {
     "name": "Door",
     "sprite": {
-        "path": "items/door.png",
-        "size": 100
+        "path": "objects/door.png",
+        "size": { "x": 100, "y":150 }
     },
     "position": { "x": 200, "y":200 },
     "interact": {

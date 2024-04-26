@@ -1,4 +1,6 @@
+import { IPosition } from "./Position";
+
 export interface Sprite {
     path: string;
-    size: number;
+    size: number | IPosition;
 }
