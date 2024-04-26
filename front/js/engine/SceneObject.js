@@ -71,7 +71,7 @@ export class SceneObject {
         //     item.append($("<span>").html("Text"));
         // }
         if (this.text) {
-            item.append($("<span class='game_text'>").html(this.text));
+            item.append($("<span class='gi_text'>").html(this.text));
         }
         this.interactCallback.then(callback => {
             if (!callback)
