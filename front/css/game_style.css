@@ -23,3 +23,10 @@
 #game #game_scene_active_items .game_item {
   position: absolute;
 }
+#game #game_scene_active_items .game_item .gi_text {
+  display: block;
+  background-color: #ffffff85;
+  box-shadow: 0 0 10px 10px #ffffff85;
+  color: #000;
+  font-size: 24px;
+}
