@@ -14,9 +14,11 @@ export class Controller {
     setPack(name) {
         this.packName = name;
         this.loadPackInfo().then(res => {
-            $("#mm_item_game_start").on("click", () => {
-                this.changeScene();
-            });
+            if (this.packInfo) {
+                $("#mm_item_game_start").on("click", () => {
+                    this.changeScene();
+                });
+            }
         });
     }
     /**
@@ -38,17 +40,15 @@ export class Controller {
                 this.saveScene();
             }
             let scene = this.savedScenes.filter(item => item.id == name)[0];
-            console.log(scene);
+            this.clearWindow();
             if (scene) {
                 this.currentScene = scene;
+                this.currentScene.render(true);
             }
             else {
                 this.currentScene = new Scene(yield this.getPackFile(FileType.SCENE, name));
+                this.currentScene.render();
             }
-            this.clearWindow();
-            this.currentScene.render();
-            // ToRemove
-            // this.currentScene.tell();
         });
     }
     /**
@@ -82,11 +82,16 @@ export class Controller {
             if (type == FileType.SCENE || type == FileType.OBJECT) {
                 path += ".json";
             }
-            return yield fetch(this.getPackFileAddress(type, path)).catch(err => {
-                console.log(`Error loading file "${name}" of type "${type}"`);
+            let address = this.getPackFileAddress(type, path);
+            return yield fetch(address).catch(err => {
+                console.log(`Error loading file "${address}" of type "${type}"`);
                 console.error(err);
                 return null;
             }).then((res) => __awaiter(this, void 0, void 0, function* () {
+                if ((res === null || res === void 0 ? void 0 : res.status) == 404) {
+                    console.log(`Error loading file "${address}" of type "${type}"`);
+                    return null;
+                }
                 switch (type) {
                     case FileType.SCRIPT:
                         return res === null || res === void 0 ? void 0 : res.text();
@@ -100,18 +105,29 @@ export class Controller {
     }
     loadPackInfo() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.packInfo = (yield this.getPackFile(FileType.INFO));
+            this.packInfo = (yield this.getPackFile(FileType.INFO).then(res => {
+                if (!res) {
+                    console.log(`Error loading pack ${this.packName}: PackInfo file is not found`);
+                    return null;
+                }
+                return res;
+            }));
         });
     }
     saveScene() {
         if (this.currentScene) {
+            this.lastSavedScene = this.currentScene.id;
             this.savedScenes.push(this.currentScene);
         }
+    }
+    getNextId() {
+        return ++this.lastId;
     }
     constructor() {
         this.packName = "";
         this.inventory = new Inventory();
         this.savedScenes = [];
+        this.lastId = 0;
     }
 }
 Controller.instance = new Controller();
