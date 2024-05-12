@@ -4,4 +4,6 @@ export var InteractType;
     InteractType["FUNCTION"] = "function";
     InteractType["TEXT"] = "text";
     InteractType["SCENE"] = "changeScene";
+    InteractType["SPAWN"] = "spawn";
+    InteractType["DELETE"] = "delete";
 })(InteractType || (InteractType = {}));
