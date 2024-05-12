@@ -1,4 +1,4 @@
-import { ISceneObject } from "./ISceneObject";
+import { ISceneObject, ISceneObjectRef } from "./ISceneObject";
 
 export interface IScene {
     id: string;
@@ -6,5 +6,5 @@ export interface IScene {
     entryText?: string;
     background: string;
     persistent: boolean;
-    objects: ISceneObject[];
+    objects: (ISceneObject | string)[];
 }

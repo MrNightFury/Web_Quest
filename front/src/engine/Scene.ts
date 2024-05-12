@@ -18,7 +18,11 @@ export class Scene {
         this.background = scene.background;
         this.persistent = scene.persistent;
         scene.objects.forEach((item) => {
-            this.objects.push(new SceneObject(item))
+            if (typeof item === "string") {
+                this.addObject(item);
+            } else {
+                this.objects.push(new SceneObject(item));
+            }
         })
     }
 
@@ -29,12 +33,13 @@ export class Scene {
         })
     }
 
-    render() {
+    render(isSaved: boolean = false) {
         $("#game > .background_img").first().attr("src", Controller.instance.getPackFileAddress(FileType.IMAGE, this.background));
         this.objects.forEach(item => $("#game_scene_active_items").append(item.render()));
         
         $("#game_text_container > .height_keeper").html(this.entryText);
-        if (this.entryText) {
+
+        if (this.entryText && !isSaved) {
             $("#game_text_container").removeClass("hidden");
             window.gameTextResize();
             $("#game_text_opener").addClass("opened");

@@ -5,18 +5,19 @@ import { Controller } from "./Controller.js";
 import { FileType } from "./FileType.js";
 
 export class SceneObject {
-    id: string = "";
+    id: number;
     sprite?: Sprite;
     name: string = "";
     position: IPosition = { x: 0, y: 0 };
-    interactCallback: Promise<Function | void>;
+    interactCallback: Promise<Function[] | Function | void>;
     text = "";
 
     element?: JQuery<HTMLElement>;
 
     constructor(sceneObject: ISceneObject) {
+        this.id = Controller.instance.getNextId();
         // console.log(sceneObject)
-        this.name = sceneObject.name;
+        this.name = sceneObject.name ?? "";
         this.sprite = sceneObject.sprite;
         this.text = sceneObject.text ?? "";
         this.position = sceneObject.position ?? this.position;
@@ -24,8 +25,16 @@ export class SceneObject {
         // console.log(this.position);
     }
 
-    async loadInteract(interact: IInteract) {
+    async loadInteract(interact: IInteract | IInteract[]): Promise<Function[] | Function | void> {
         if (!interact) return;
+        if (Array.isArray(interact)) {
+            let funcs: Function[] = [];
+            for (const func of interact) {
+                funcs.push((await this.loadInteract(func)) as unknown as Function)
+            }
+            return funcs;
+        }
+
         switch (interact.type) {
             case InteractType.FUNCTION:
                 let [scriptName, functionName] = interact.path.split('/');
@@ -34,11 +43,19 @@ export class SceneObject {
                 return () => console.log(interact.text);
             case InteractType.SCENE:
                 return () => Controller.instance.changeScene(interact.sceneId);
+            case InteractType.SPAWN:
+                return () => Controller.instance.currentScene?.addObject(interact.object);
+            case InteractType.DELETE:
+                return () => {
+                    if (Controller.instance.currentScene)
+                        Controller.instance.currentScene.objects = Controller.instance.currentScene?.objects.filter(object => object.id != this.id);
+                    this.element?.remove();
+                }
             case InteractType.TAKE:
                 return function (this: SceneObject) {
                     if (Controller.instance.inventory.addItem({ name: this.name, sprite: this.sprite ?? {path: "", size: 100}}) != -1){
                         if (Controller.instance.currentScene)
-                            Controller.instance.currentScene.objects = Controller.instance.currentScene?.objects.filter(object => object.name != this.name);
+                            Controller.instance.currentScene.objects = Controller.instance.currentScene?.objects.filter(object => object.id != this.id);
                         this.element?.remove();
                     }
                 }
@@ -56,8 +73,8 @@ export class SceneObject {
         if (this.sprite){
             let img = $(`<img>`);
             img.css({
-                width: typeof this.sprite.size == "object" ? this.sprite.size.x : "100px",
-                height: typeof this.sprite.size == "object" ? this.sprite.size.y : "100px"
+                width: typeof this.sprite.size === "object" ? this.sprite.size.x + "px" : this.sprite.size + "px",
+                height: typeof this.sprite.size === "object" ? this.sprite.size.y + "px" : this.sprite.size + "px"
             });
             img.attr("src", Controller.instance.getPackFileAddress(FileType.IMAGE, this.sprite?.path));
             item.append(img);
@@ -73,7 +90,14 @@ export class SceneObject {
             if (!callback) return;
             item.css("cursor", "pointer");
             item.on("click", () => {
-                callback.bind({...this, Controller: Controller.instance})(Controller.instance.inventory.selectedItem);
+                if (Array.isArray(callback)) {
+                    for (const func of callback) {
+                        console.log(func)
+                        func.bind({...this, Controller: Controller.instance})(Controller.instance.inventory.selectedItem);
+                    }
+                } else {
+                    callback.bind({...this, Controller: Controller.instance})(Controller.instance.inventory.selectedItem);
+                }
             });
         });
         
