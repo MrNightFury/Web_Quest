@@ -11,6 +11,7 @@ export class Scene {
         this.id = scene.id;
         this.name = scene.name;
         this.entryText = (_a = scene.entryText) !== null && _a !== void 0 ? _a : "";
+        this.entryScript = scene.entryScript;
         this.background = scene.background;
         this.persistent = scene.persistent;
         scene.objects.forEach((item) => {
@@ -44,12 +45,17 @@ export class Scene {
         }
     }
     addObject(name) {
-        console.log(name);
+        // console.log(name);
         Controller.instance.getPackFile(FileType.OBJECT, name).then(object => {
             this.objects.push(new SceneObject(object));
             $("#game_scene_active_items").append(this.objects[this.objects.length - 1].render());
         });
     }
-    removeObject() {
+    removeObject(name) {
+        var _a;
+        let i = this.objects.findIndex(item => { console.log(item.name, name, item.name == name); return item.name == name; });
+        console.log(i, this.objects[i]);
+        (_a = this.objects[i].element) === null || _a === void 0 ? void 0 : _a.remove();
+        this.objects.splice(i, 1);
     }
 }

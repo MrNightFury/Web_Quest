@@ -96,7 +96,7 @@ export class SceneObject {
             item.on("click", () => {
                 if (Array.isArray(callback)) {
                     for (const func of callback) {
-                        console.log(func);
+                        // console.log(func)
                         func.bind(Object.assign(Object.assign({}, this), { Controller: Controller.instance }))(Controller.instance.inventory.selectedItem);
                     }
                 }

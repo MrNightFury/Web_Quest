@@ -7,4 +7,5 @@ export interface IScene {
     background: string;
     persistent: boolean;
     objects: (ISceneObject | string)[];
+    entryScript: string;
 }

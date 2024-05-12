@@ -43,4 +43,12 @@ export class Inventory {
             $(".itembox").removeClass("selected");
         }
     }
+    hasItem(name) {
+        for (let item of this.items) {
+            if ((item === null || item === void 0 ? void 0 : item.name) == name) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

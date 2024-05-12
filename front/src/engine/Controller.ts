@@ -7,6 +7,8 @@ import { Inventory } from "./Inventory.js";
 export class Controller {
     static instance = new Controller();
 
+    savedState: any = {};
+
     packName: string = "";
     packInfo?: IPackInfo;
     currentScene?: Scene;
@@ -55,6 +57,11 @@ export class Controller {
         } else {
             this.currentScene = new Scene(await this.getPackFile(FileType.SCENE, name) as IScene);
             this.currentScene.render();
+        }
+        if (this.currentScene.entryScript) {
+            let [scriptName, functionName] = this.currentScene.entryScript.split('/');
+            (await this.getFunction(scriptName, functionName))
+                .bind({Controller: Controller.instance})();
         }
     }
 

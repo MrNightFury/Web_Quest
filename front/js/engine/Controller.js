@@ -49,6 +49,11 @@ export class Controller {
                 this.currentScene = new Scene(yield this.getPackFile(FileType.SCENE, name));
                 this.currentScene.render();
             }
+            if (this.currentScene.entryScript) {
+                let [scriptName, functionName] = this.currentScene.entryScript.split('/');
+                (yield this.getFunction(scriptName, functionName))
+                    .bind({ Controller: Controller.instance })();
+            }
         });
     }
     /**
@@ -124,6 +129,7 @@ export class Controller {
         return ++this.lastId;
     }
     constructor() {
+        this.savedState = {};
         this.packName = "";
         this.inventory = new Inventory();
         this.savedScenes = [];

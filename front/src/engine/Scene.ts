@@ -9,12 +9,14 @@ export class Scene {
     entryText: string;
     background: string = "";
     persistent: boolean;
+    entryScript?: string;
     objects: SceneObject[] = [];
 
     constructor(scene: IScene) {
         this.id = scene.id;
         this.name = scene.name;
         this.entryText = scene.entryText ?? "";
+        this.entryScript = scene.entryScript;
         this.background = scene.background;
         this.persistent = scene.persistent;
         scene.objects.forEach((item) => {
@@ -51,14 +53,17 @@ export class Scene {
     }
 
     addObject(name: string) {
-        console.log(name);
+        // console.log(name);
         Controller.instance.getPackFile(FileType.OBJECT, name).then(object => {
             this.objects.push(new SceneObject(object))
             $("#game_scene_active_items").append(this.objects[this.objects.length - 1].render());
         })
     }
 
-    removeObject() {
-        
+    removeObject(name: string) {
+        let i = this.objects.findIndex(item => {console.log(item.name, name, item.name == name); return item.name == name});
+        console.log(i, this.objects[i])
+        this.objects[i].element?.remove();
+        this.objects.splice(i, 1);
     }
 }
