@@ -4,6 +4,10 @@
     "entryText": "Вы погибли. Не получилось, не фортануло. Может в следующий раз прокатит.",
     "objects": [{
         "text": "Попробовать заново",
-        "position": {"x": 500, "y": 300}
+        "position": {"x": 500, "y": 300},
+        "interact": {
+            "type": "function",
+            "path": "goback.js/reload"
+        }
     }]
 }
