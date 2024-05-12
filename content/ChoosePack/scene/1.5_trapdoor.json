@@ -8,11 +8,11 @@
         "text": "Попытаться открыть руками",
         "position": {"x": 200, "y": 350},
         "interact": [{
+            "type": "changeScene",
+            "sceneId": "2.0_underTrapdoor"
+        }, {
             "type": "function",
             "path": "story.js/decreaseTime"
-        }, {
-            "type": "changeScene",
-            "sceneId": "e.2_dog"
         }]
     }]
 }
