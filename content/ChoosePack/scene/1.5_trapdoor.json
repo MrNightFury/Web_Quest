@@ -1,0 +1,18 @@
+{
+    "name": "Room with dog",
+    "background": "black.jpg",
+    "entryText": "Люк, разумеется, закрыт. Нужно как-то открыть!",
+    "objects": [
+        "trapdoor", 
+    {
+        "text": "Попытаться открыть руками",
+        "position": {"x": 200, "y": 350},
+        "interact": [{
+            "type": "function",
+            "path": "story.js/decreaseTime"
+        }, {
+            "type": "changeScene",
+            "sceneId": "e.2_dog"
+        }]
+    }]
+}

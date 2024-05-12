@@ -1,0 +1,11 @@
+{
+    "sprite": {
+        "path": "trapdoor.png",
+        "size": 300
+    },
+    "position": {"x": 900, "y": 200},
+    "interact": [{
+        "type": "function",
+        "path": "story.js/trapdoorInteract"
+    }]
+}
