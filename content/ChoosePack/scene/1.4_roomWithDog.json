@@ -29,5 +29,12 @@
             "type": "function",
             "path": "story.js/dogWait"
         }
+    }, {
+        "text": "Попытаться открыть люк",
+        "position": {"x": 200, "y": 250},
+        "interact": {
+            "type": "changeScene",
+            "sceneId": "e.2_dog"
+        }
     }]
 }
