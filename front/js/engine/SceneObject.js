@@ -12,16 +12,16 @@ import { Controller } from "./Controller.js";
 import { FileType } from "./FileType.js";
 export class SceneObject {
     constructor(sceneObject) {
-        var _a, _b;
-        this.id = "";
+        var _a, _b, _c;
         this.name = "";
         this.position = { x: 0, y: 0 };
         this.text = "";
+        this.id = Controller.instance.getNextId();
         // console.log(sceneObject)
-        this.name = sceneObject.name;
+        this.name = (_a = sceneObject.name) !== null && _a !== void 0 ? _a : "";
         this.sprite = sceneObject.sprite;
-        this.text = (_a = sceneObject.text) !== null && _a !== void 0 ? _a : "";
-        this.position = (_b = sceneObject.position) !== null && _b !== void 0 ? _b : this.position;
+        this.text = (_b = sceneObject.text) !== null && _b !== void 0 ? _b : "";
+        this.position = (_c = sceneObject.position) !== null && _c !== void 0 ? _c : this.position;
         this.interactCallback = this.loadInteract(sceneObject.interact);
         // console.log(this.position);
     }
@@ -29,6 +29,13 @@ export class SceneObject {
         return __awaiter(this, void 0, void 0, function* () {
             if (!interact)
                 return;
+            if (Array.isArray(interact)) {
+                let funcs = [];
+                for (const func of interact) {
+                    funcs.push((yield this.loadInteract(func)));
+                }
+                return funcs;
+            }
             switch (interact.type) {
                 case InteractType.FUNCTION:
                     let [scriptName, functionName] = interact.path.split('/');
@@ -37,12 +44,21 @@ export class SceneObject {
                     return () => console.log(interact.text);
                 case InteractType.SCENE:
                     return () => Controller.instance.changeScene(interact.sceneId);
+                case InteractType.SPAWN:
+                    return () => { var _a; return (_a = Controller.instance.currentScene) === null || _a === void 0 ? void 0 : _a.addObject(interact.object); };
+                case InteractType.DELETE:
+                    return () => {
+                        var _a, _b;
+                        if (Controller.instance.currentScene)
+                            Controller.instance.currentScene.objects = (_a = Controller.instance.currentScene) === null || _a === void 0 ? void 0 : _a.objects.filter(object => object.id != this.id);
+                        (_b = this.element) === null || _b === void 0 ? void 0 : _b.remove();
+                    };
                 case InteractType.TAKE:
                     return function () {
                         var _a, _b, _c;
                         if (Controller.instance.inventory.addItem({ name: this.name, sprite: (_a = this.sprite) !== null && _a !== void 0 ? _a : { path: "", size: 100 } }) != -1) {
                             if (Controller.instance.currentScene)
-                                Controller.instance.currentScene.objects = (_b = Controller.instance.currentScene) === null || _b === void 0 ? void 0 : _b.objects.filter(object => object.name != this.name);
+                                Controller.instance.currentScene.objects = (_b = Controller.instance.currentScene) === null || _b === void 0 ? void 0 : _b.objects.filter(object => object.id != this.id);
                             (_c = this.element) === null || _c === void 0 ? void 0 : _c.remove();
                         }
                     };
@@ -61,8 +77,8 @@ export class SceneObject {
         if (this.sprite) {
             let img = $(`<img>`);
             img.css({
-                width: typeof this.sprite.size == "object" ? this.sprite.size.x : "100px",
-                height: typeof this.sprite.size == "object" ? this.sprite.size.y : "100px"
+                width: typeof this.sprite.size === "object" ? this.sprite.size.x + "px" : this.sprite.size + "px",
+                height: typeof this.sprite.size === "object" ? this.sprite.size.y + "px" : this.sprite.size + "px"
             });
             img.attr("src", Controller.instance.getPackFileAddress(FileType.IMAGE, (_a = this.sprite) === null || _a === void 0 ? void 0 : _a.path));
             item.append(img);
@@ -78,7 +94,15 @@ export class SceneObject {
                 return;
             item.css("cursor", "pointer");
             item.on("click", () => {
-                callback.bind(Object.assign(Object.assign({}, this), { Controller: Controller.instance }))(Controller.instance.inventory.selectedItem);
+                if (Array.isArray(callback)) {
+                    for (const func of callback) {
+                        console.log(func);
+                        func.bind(Object.assign(Object.assign({}, this), { Controller: Controller.instance }))(Controller.instance.inventory.selectedItem);
+                    }
+                }
+                else {
+                    callback.bind(Object.assign(Object.assign({}, this), { Controller: Controller.instance }))(Controller.instance.inventory.selectedItem);
+                }
             });
         });
         this.element = item;

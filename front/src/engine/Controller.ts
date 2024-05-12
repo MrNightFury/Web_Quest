@@ -13,14 +13,19 @@ export class Controller {
 
     inventory = new Inventory();
     savedScenes: Scene[] = [];
+    lastSavedScene?: string;
+
+    lastId: number = 0;
 
     setPack(name: string) {
         this.packName = name;
         
         this.loadPackInfo().then(res => {
-            $("#mm_item_game_start").on("click", () => {
-                this.changeScene();
-            })
+            if (this.packInfo) {
+                $("#mm_item_game_start").on("click", () => {
+                    this.changeScene();
+                })
+            }
         });
     }
 
@@ -42,19 +47,15 @@ export class Controller {
         }
 
         let scene = this.savedScenes.filter(item => item.id == name)[0];
-        console.log(scene)
 
+        this.clearWindow();
         if (scene) {
             this.currentScene = scene;
+            this.currentScene.render(true);
         } else {
             this.currentScene = new Scene(await this.getPackFile(FileType.SCENE, name) as IScene);
+            this.currentScene.render();
         }
-        
-        this.clearWindow();
-        this.currentScene.render();
-        
-        // ToRemove
-        // this.currentScene.tell();
     }
 
     /**
@@ -87,11 +88,16 @@ export class Controller {
         if (type == FileType.SCENE || type == FileType.OBJECT) {
             path += ".json";
         }
-        return await fetch(this.getPackFileAddress(type, path)).catch(err => {
-            console.log(`Error loading file "${name}" of type "${type}"`);
+        let address = this.getPackFileAddress(type, path);
+        return await fetch(address).catch(err => {
+            console.log(`Error loading file "${address}" of type "${type}"`);
             console.error(err);
             return null;
         }).then(async res => {
+            if (res?.status == 404) {
+                console.log(`Error loading file "${address}" of type "${type}"`);
+                return null;
+            }
             switch (type) {
                 case FileType.SCRIPT:
                     return res?.text();
@@ -105,13 +111,24 @@ export class Controller {
     }
 
     async loadPackInfo() {
-        this.packInfo = await this.getPackFile(FileType.INFO) as IPackInfo;
+        this.packInfo = await this.getPackFile(FileType.INFO).then(res => {
+            if (!res) {
+                console.log(`Error loading pack ${this.packName}: PackInfo file is not found`);
+                return null;
+            }
+            return res;
+        }) as IPackInfo;
     }
 
     saveScene() {
         if (this.currentScene) {
+            this.lastSavedScene = this.currentScene.id;
             this.savedScenes.push(this.currentScene);
         }
+    }
+
+    getNextId() {
+        return ++this.lastId;
     }
 
     constructor() {}
