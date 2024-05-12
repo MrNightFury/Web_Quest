@@ -15,6 +15,9 @@ export class Controller {
 
     inventory = new Inventory();
     savedScenes: Scene[] = [];
+    // loadQueue: string[] = [];
+
+    loadingPromise?: Promise<any>;
     lastSavedScene?: string;
 
     lastId: number = 0;

@@ -42,7 +42,7 @@ export class SceneObject {
             case InteractType.TEXT:
                 return () => console.log(interact.text);
             case InteractType.SCENE:
-                return () => Controller.instance.changeScene(interact.sceneId);
+                return async () => await Controller.instance.changeScene(interact.sceneId);
             case InteractType.SPAWN:
                 return () => Controller.instance.currentScene?.addObject(interact.object);
             case InteractType.DELETE:
@@ -89,14 +89,14 @@ export class SceneObject {
         this.interactCallback.then(callback => {
             if (!callback) return;
             item.css("cursor", "pointer");
-            item.on("click", () => {
+            item.on("click", async () => {
                 if (Array.isArray(callback)) {
                     for (const func of callback) {
                         // console.log(func)
-                        func.bind({...this, Controller: Controller.instance})(Controller.instance.inventory.selectedItem);
+                        await func.bind({...this, Controller: Controller.instance})(Controller.instance.inventory.selectedItem);
                     }
                 } else {
-                    callback.bind({...this, Controller: Controller.instance})(Controller.instance.inventory.selectedItem);
+                    await callback.bind({...this, Controller: Controller.instance})(Controller.instance.inventory.selectedItem);
                 }
             });
         });

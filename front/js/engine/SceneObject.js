@@ -43,7 +43,7 @@ export class SceneObject {
                 case InteractType.TEXT:
                     return () => console.log(interact.text);
                 case InteractType.SCENE:
-                    return () => Controller.instance.changeScene(interact.sceneId);
+                    return () => __awaiter(this, void 0, void 0, function* () { return yield Controller.instance.changeScene(interact.sceneId); });
                 case InteractType.SPAWN:
                     return () => { var _a; return (_a = Controller.instance.currentScene) === null || _a === void 0 ? void 0 : _a.addObject(interact.object); };
                 case InteractType.DELETE:
@@ -93,17 +93,17 @@ export class SceneObject {
             if (!callback)
                 return;
             item.css("cursor", "pointer");
-            item.on("click", () => {
+            item.on("click", () => __awaiter(this, void 0, void 0, function* () {
                 if (Array.isArray(callback)) {
                     for (const func of callback) {
                         // console.log(func)
-                        func.bind(Object.assign(Object.assign({}, this), { Controller: Controller.instance }))(Controller.instance.inventory.selectedItem);
+                        yield func.bind(Object.assign(Object.assign({}, this), { Controller: Controller.instance }))(Controller.instance.inventory.selectedItem);
                     }
                 }
                 else {
-                    callback.bind(Object.assign(Object.assign({}, this), { Controller: Controller.instance }))(Controller.instance.inventory.selectedItem);
+                    yield callback.bind(Object.assign(Object.assign({}, this), { Controller: Controller.instance }))(Controller.instance.inventory.selectedItem);
                 }
-            });
+            }));
         });
         this.element = item;
         return item;
