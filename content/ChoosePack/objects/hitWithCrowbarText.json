@@ -1,6 +1,6 @@
 {
     "text": "Ударить ломом!",
-    "position": {"x": 700, "y": 250},
+    "position": {"x": 900, "y": 350},
     "interact": [{
         "type": "spawn",
         "object": "crowbarHitResultText"
