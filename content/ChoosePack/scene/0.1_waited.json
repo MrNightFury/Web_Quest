@@ -1,13 +1,13 @@
 {
     "name": "Start scene",
     "background": "black.jpg",
-    "entryText": "Он пришёл за вами! Дверь открывается, оттуда выходит незнакомец с явно недружелюбными намерениями",
+    "entryText": "Вы ждёте, ничего не происходит",
     "objects": [{
-        "text": "Драться!",
+        "text": "Дальше",
         "position": {"x": 900, "y": 300},
         "interact": {
             "type": "changeScene",
-            "sceneId": "e.1_fight"
+            "sceneId": "0.0_startScene"
         }
     }]
 }
