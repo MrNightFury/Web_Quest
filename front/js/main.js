@@ -5,3 +5,4 @@ let packName = (_a = urlParams.get("pack")) !== null && _a !== void 0 ? _a : "Es
 console.log(packName);
 var controller = Controller.instance;
 controller.setPack(packName);
+alert("Внимание, движок находится на ранней стадии разработки, поэтому будьте готовы к шоколадкам");
