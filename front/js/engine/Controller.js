@@ -13,13 +13,15 @@ import { Inventory } from "./Inventory.js";
 import { AudioController } from "./AudioController.js";
 export class Controller {
     setPack(name) {
-        this.packName = name;
-        this.loadPackInfo().then(res => {
-            if (this.packInfo) {
-                $("#mm_item_game_start").on("click", () => {
-                    this.changeScene();
-                });
-            }
+        return __awaiter(this, void 0, void 0, function* () {
+            this.packName = name;
+            yield this.loadPackInfo().then(res => {
+                if (this.packInfo) {
+                    $("#mm_item_game_start").on("click", () => {
+                        this.changeScene();
+                    });
+                }
+            });
         });
     }
     /**

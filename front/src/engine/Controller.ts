@@ -17,17 +17,16 @@ export class Controller {
 
     inventory = new Inventory();
     savedScenes: Scene[] = [];
-    // loadQueue: string[] = [];
 
     loadingPromise?: Promise<any>;
     lastSavedScene?: string;
 
     lastId: number = 0;
 
-    setPack(name: string) {
+    async setPack(name: string) {
         this.packName = name;
         
-        this.loadPackInfo().then(res => {
+        await this.loadPackInfo().then(res => {
             if (this.packInfo) {
                 $("#mm_item_game_start").on("click", () => {
                     this.changeScene();
