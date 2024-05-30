@@ -20,6 +20,11 @@ export class Controller {
                     $("#mm_item_game_start").on("click", () => {
                         this.changeScene();
                     });
+                    setTimeout(() => {
+                        if (this.packInfo && this.packInfo.backgroundMusic) {
+                            this.audio.setBackground(this.packInfo.backgroundMusic);
+                        }
+                    }, 1000);
                 }
             });
         });
@@ -137,7 +142,11 @@ export class Controller {
     getNextId() {
         return ++this.lastId;
     }
+    clearSave() {
+        this.savedScenes = [];
+    }
     constructor() {
+        this.audio = AudioController.instance;
         this.savedState = {};
         this.packName = "";
         this.inventory = new Inventory();
@@ -146,4 +155,3 @@ export class Controller {
     }
 }
 Controller.instance = new Controller();
-Controller.audio = AudioController.instance;

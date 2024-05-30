@@ -7,7 +7,7 @@ import { AudioController } from "./AudioController.js";
 
 export class Controller {
     static instance = new Controller();
-    static audio = AudioController.instance;
+    audio = AudioController.instance;
     
     savedState: any = {};
 
@@ -31,6 +31,11 @@ export class Controller {
                 $("#mm_item_game_start").on("click", () => {
                     this.changeScene();
                 })
+                setTimeout(() => {
+                    if (this.packInfo && this.packInfo.backgroundMusic) {
+                        this.audio.setBackground(this.packInfo.backgroundMusic);
+                    }
+                }, 1000)
             }
         });
     }
@@ -147,6 +152,10 @@ export class Controller {
 
     getNextId() {
         return ++this.lastId;
+    }
+
+    clearSave() {
+        this.savedScenes = [];
     }
 
     constructor() {}

@@ -1,10 +1,10 @@
 {
     "name": "Start scene",
-    "background": "black.jpg",
+    "background": "locked_room.png",
     "entryText": "Вы ждёте, ничего не происходит",
     "objects": [{
         "text": "Дальше",
-        "position": {"x": 900, "y": 300},
+        "position": {"x": 200, "y": 450},
         "interact": {
             "type": "changeScene",
             "sceneId": "0.0_startScene"
