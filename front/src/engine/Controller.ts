@@ -3,10 +3,12 @@ import { IPackInfo } from "./interfaces/IPackInfo.js"
 import { FileType } from "./FileType.js";
 import { IScene } from "./interfaces/IScene.js";
 import { Inventory } from "./Inventory.js";
+import { AudioController } from "./AudioController.js";
 
 export class Controller {
     static instance = new Controller();
-
+    static audio = AudioController.instance;
+    
     savedState: any = {};
 
     packName: string = "";

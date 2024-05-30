@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { InteractType } from "./interfaces/ISceneObject.js";
 import { Controller } from "./Controller.js";
 import { FileType } from "./FileType.js";
+import { AudioController } from "./AudioController.js";
 export class SceneObject {
     constructor(sceneObject) {
         var _a, _b, _c;
@@ -46,6 +47,8 @@ export class SceneObject {
                     return () => __awaiter(this, void 0, void 0, function* () { return yield Controller.instance.changeScene(interact.sceneId); });
                 case InteractType.SPAWN:
                     return () => { var _a; return (_a = Controller.instance.currentScene) === null || _a === void 0 ? void 0 : _a.addObject(interact.object); };
+                case InteractType.PLAYSOUND:
+                    return () => { AudioController.instance.play(interact.sound); };
                 case InteractType.DELETE:
                     return () => {
                         var _a, _b;

@@ -5,4 +5,5 @@ export var FileType;
     FileType["SCENE"] = "scene";
     FileType["SCRIPT"] = "scripts";
     FileType["OBJECT"] = "objects";
+    FileType["AUDIO"] = "audio";
 })(FileType || (FileType = {}));

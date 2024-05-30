@@ -4,4 +4,5 @@ export enum FileType {
     SCENE = "scene",
     SCRIPT = "scripts",
     OBJECT = "objects",
+    AUDIO = "audio"
 }

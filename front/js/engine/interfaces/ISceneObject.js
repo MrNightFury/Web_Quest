@@ -6,4 +6,5 @@ export var InteractType;
     InteractType["SCENE"] = "changeScene";
     InteractType["SPAWN"] = "spawn";
     InteractType["DELETE"] = "delete";
+    InteractType["PLAYSOUND"] = "playSound";
 })(InteractType || (InteractType = {}));

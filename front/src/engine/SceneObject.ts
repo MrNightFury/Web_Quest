@@ -3,6 +3,7 @@ import { IPosition } from "./interfaces/Position.js";
 import { IInteract, InteractType, ISceneObject } from "./interfaces/ISceneObject.js";
 import { Controller } from "./Controller.js";
 import { FileType } from "./FileType.js";
+import { AudioController } from "./AudioController.js";
 
 export class SceneObject {
     id: number;
@@ -45,6 +46,8 @@ export class SceneObject {
                 return async () => await Controller.instance.changeScene(interact.sceneId);
             case InteractType.SPAWN:
                 return () => Controller.instance.currentScene?.addObject(interact.object);
+            case InteractType.PLAYSOUND:
+                return () => {AudioController.instance.play(interact.sound)};
             case InteractType.DELETE:
                 return () => {
                     if (Controller.instance.currentScene)

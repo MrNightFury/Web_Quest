@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Scene } from "./Scene.js";
 import { FileType } from "./FileType.js";
 import { Inventory } from "./Inventory.js";
+import { AudioController } from "./AudioController.js";
 export class Controller {
     setPack(name) {
         this.packName = name;
@@ -137,3 +138,4 @@ export class Controller {
     }
 }
 Controller.instance = new Controller();
+Controller.audio = AudioController.instance;

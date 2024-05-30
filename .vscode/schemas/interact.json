@@ -3,7 +3,7 @@
     "properties": {
         "type": {
             "type": "string",
-            "enum": ["take", "function", "text", "changeScene", "spawn", "delete"]
+            "enum": ["take", "function", "text", "changeScene", "spawn", "delete", "playSound"]
         }
     },
     "required": ["type"],
@@ -62,5 +62,15 @@
             }
         },
         "required": []
+    }, {
+        "properties": {
+            "type": {
+                "const": "playSound"
+            },
+            "sound": {
+                "type": "string"
+            }
+        },
+        "required": ["sound"]
     }]
 }

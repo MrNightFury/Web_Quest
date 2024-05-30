@@ -20,7 +20,8 @@ export enum InteractType {
     TEXT = "text",
     SCENE = "changeScene",
     SPAWN = "spawn",
-    DELETE = "delete"
+    DELETE = "delete",
+    PLAYSOUND = "playSound"
 }
 
 export interface BaseInteract<T = InteractType> {
@@ -47,4 +48,8 @@ export interface deleteInteract extends BaseInteract<InteractType.DELETE> {
 
 }
 
-export type IInteract = takeInteract | functionInteract | textInteract | sceneInteract | spawnInteract | deleteInteract;
+export interface playSoundInteract extends BaseInteract<InteractType.PLAYSOUND> {
+    sound: string;
+}
+
+export type IInteract = takeInteract | functionInteract | textInteract | sceneInteract | spawnInteract | deleteInteract | playSoundInteract;
