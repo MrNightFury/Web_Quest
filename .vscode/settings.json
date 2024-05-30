@@ -13,6 +13,11 @@
                 "content/*/scene/*.json"
             ],
             "url": "./.vscode/schemas/scene.json"
+        }, {
+            "fileMatch": [
+                "content/*/pack.info"
+            ],
+            "url": "./.vscode/schemas/packinfo.json"
         }
     ]
 }

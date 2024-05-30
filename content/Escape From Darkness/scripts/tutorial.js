@@ -18,3 +18,9 @@ function tutorial2(item) {
         this.Controller.currentScene.addObject("door");
     }
 }
+
+function finish() {
+    this.Controller.setPack("ChoosePack").then(() => {
+        this.Controller.changeScene(this.Controller.packInfo.defaultScene);
+    })
+}

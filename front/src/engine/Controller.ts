@@ -129,6 +129,13 @@ export class Controller {
             }
             return res;
         }) as IPackInfo;
+
+        if (this.packInfo.authors) {
+            $("#mm_authors").empty();
+            for (let item of this.packInfo.authors) {
+                $("#mm_authors").append($(`<h2 class='mm_text'>${item}</h2>`));
+            }
+        }
     }
 
     saveScene() {
