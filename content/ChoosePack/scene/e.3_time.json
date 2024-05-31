@@ -1,6 +1,6 @@
 { 
     "name": "Dog",
-    "background": "black.jpg",
+    "background": "maniac.png",
     "entryText": "Вас догнали! Надо срочно что-то сделать!",
     "objects": [{
         "text": "Драться!",

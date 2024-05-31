@@ -1,4 +1,5 @@
 {
     "name": "Escape From Darkness",
-    "defaultScene": "testSeaScene"
+    "defaultScene": "testSeaScene",
+    "backgroundMusic": "ambient.mp3"
 }

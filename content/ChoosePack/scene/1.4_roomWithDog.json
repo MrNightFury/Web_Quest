@@ -1,6 +1,6 @@
 {
     "name": "Room with dog",
-    "background": "black.jpg",
+    "background": "dog_room.png",
     "entryText": "Вы забегаете в комнату. В центре комнаты люк, на котором сидит явно не дружелюбно настроеная собака. Слева возле стенки - шкаф.",
     "objects": [{
         "name": "dog",

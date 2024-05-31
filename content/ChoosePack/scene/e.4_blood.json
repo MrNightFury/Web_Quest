@@ -1,6 +1,6 @@
 { 
     "name": "Dog",
-    "background": "black.jpg",
+    "background": "maniac.png",
     "entryText": "Вы пытались, но, из-за укусов и кровотечения, скорость ваша невелика. Вас догнали!",
     "objects": [{
         "text": "Драться!",

@@ -2,7 +2,7 @@
     "name": "Opened door",
     "entryText": "Дверь поддалась! Но, кажется, грохот привлёк кого-то - громкие шаги быстро приближаются к вам.",
     "persistent": true,
-    "background": "black.jpg",
+    "background": "locked_door.png",
     "objects": [
         "crowbar", {
             "text": "Драться!",

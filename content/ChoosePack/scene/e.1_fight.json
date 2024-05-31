@@ -1,6 +1,6 @@
 { 
     "name": "Fight",
-    "background": "black.jpg",
+    "background": "maniac.png",
     "entryText": "Вы выскакиваете на незнакомца. Он выскакивает на вас.",
     "entryScript": "story.js/fightEntry",
     "objects": [{

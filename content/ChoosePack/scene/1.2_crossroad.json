@@ -1,7 +1,7 @@
 {
     "name": "Crossroad",
     "persistent": true,
-    "background": "black.jpg",
+    "background": "fork.png",
     "entryText": "Слева - ванная комната. Оттуда доносится какой-то странный запах. Может, там есть что-то полезное?",
     "objects": [{
         "text": "Вперёд!",

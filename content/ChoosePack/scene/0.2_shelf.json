@@ -1,6 +1,6 @@
 {
     "name": "Shelf",
-    "background": "black.jpg",
+    "background": "locked_room.png",
     "persistent": true,
     "objects": [
         "crowbar", {

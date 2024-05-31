@@ -1,6 +1,6 @@
 {
     "name": "Room with dog",
-    "background": "black.jpg",
+    "background": "hatch.png",
     "entryText": "Люк, разумеется, закрыт. Нужно как-то открыть!",
     "objects": [
         "trapdoor", 
