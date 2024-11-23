@@ -1,5 +1,5 @@
 import { setupEnv } from "./Environment.js";
-import { Engine } from "./engine/Engine.js";
+import { Engine } from "engine/Engine.js";
 
 console.log("Setting up environment...");
 setupEnv();

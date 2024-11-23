@@ -1,4 +1,4 @@
-import { FileType } from "./interfaces/PackFiles.js";
+import { FileType } from "./interfaces/PackFileTypes.js";
 import { isDeno } from "../Environment.js";
 if (isDeno()) {
     // @ts-ignore: 
@@ -10,31 +10,36 @@ export var SourceType;
     SourceType["REMOTE"] = "remote";
 })(SourceType || (SourceType = {}));
 export class Loader {
-    packName = "";
+    // packName: string = "";
     packBasePath = "";
-    packSources = [];
+    packSources = new Set();
+    moduleSources = new Set();
     constructor() {
         this.updateAvailableSources();
     }
     async findPack(packName) {
         for (const source of this.packSources) {
             const sourceBasePath = (source.type == SourceType.LOCAL ? "file://" + path.resolve(source.basePath) : source.basePath);
-            return await fetch(this.getPackFilePath(FileType.PACKINFO, "", sourceBasePath + "/" + packName + "/")).then(async (res) => {
-                if (res.status == 200) {
-                    this.packBasePath = source.basePath + packName + "/";
-                    return await res.json();
-                }
-            });
+            const result = await this.getPackFile(FileType.PACKINFO, "", sourceBasePath + "/" + packName + "/");
+            if (result) {
+                this.packBasePath = sourceBasePath + "/" + packName + "/";
+                return result;
+            }
         }
     }
     updateAvailableSources() {
-        this.packSources = [];
-        this.packSources.push({
+        this.packSources.clear();
+        this.packSources.add({
             basePath: "../content/",
             type: ENV.deno ? SourceType.LOCAL : SourceType.REMOTE
         });
+        this.moduleSources.clear();
+        this.moduleSources.add({
+            basePath: "../modules/",
+            type: ENV.deno ? SourceType.LOCAL : SourceType.REMOTE
+        });
     }
-    getPackFilePath(type, name, basePath) {
+    getPackFilePath(type, _name, basePath) {
         const path = basePath ? basePath : this.packBasePath;
         return (() => {
             switch (type) {
@@ -43,8 +48,24 @@ export class Loader {
             }
         })();
     }
-    async getPackFile() {
-    }
-    async loadPackInfo() {
+    async getPackFile(type, name, basePath) {
+        const path = this.getPackFilePath(type, name, basePath);
+        const result = await fetch(path).catch(err => {
+            console.error(err);
+        }).then(async (res) => {
+            if (res?.status == 200) {
+                return await res;
+            }
+        });
+        if (!result) {
+            console.error("File not found: " + path);
+            return;
+        }
+        switch (type) {
+            case FileType.PACKINFO:
+                return await result.json();
+            default:
+                return await result.text();
+        }
     }
 }

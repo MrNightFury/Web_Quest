@@ -1,6 +1,6 @@
-import { Loader } from "./Loader.js";
-import { ModulesManager } from "./Modules/ModulesManager.js";
-import { IPackInfo } from "./interfaces/IPackInfo.js";
+import { Loader } from "./Loader";
+import { ModulesManager } from "./Modules/ModulesManager";
+import { IPackInfo } from "./interfaces/IPackInfo";
 
 export class Engine {
     packLoaded: boolean = false;
@@ -21,6 +21,7 @@ export class Engine {
         }
 
         this.packLoaded = true;
+        this.loader
         console.log("Pack loaded: " + this.packInfo.name);
 
         if (this.packInfo.pfv == undefined) {
@@ -29,7 +30,7 @@ export class Engine {
         }
 
         if (this.packInfo.pfv == 1) {
-            this.modulesManager.lo
+            this.modulesManager.loadModule("CompModule");
             return;
         }
     }

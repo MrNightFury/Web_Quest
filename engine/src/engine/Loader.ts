@@ -1,4 +1,4 @@
-import { FileType } from "./interfaces/PackFileTypes.ts";
+import { FileType } from "./interfaces/PackFileTypes.js";
 import { isDeno } from "../Environment.js";
 import type { IPackInfo } from "engine/interfaces/IPackInfo.js";
 
@@ -18,7 +18,7 @@ export interface Source {
 }
 
 export class Loader {
-    packName: string = "";
+    // packName: string = "";
     packBasePath: string = "";
 
     packSources: Set<Source> = new Set();
@@ -28,22 +28,14 @@ export class Loader {
         this.updateAvailableSources()
     }
 
-    async findPack(packName: string) {
+    async findPack(packName: string): Promise<IPackInfo | undefined> {
         for (const source of this.packSources) {
             const sourceBasePath = (source.type == SourceType.LOCAL ? "file://" + path.resolve(source.basePath) : source.basePath);
-            
-            // const result = await fetch(this.getPackFilePath(FileType.PACKINFO, "", sourceBasePath + "/" + packName + "/")).catch(err => {
-            //     console.error(err);
-            // }).then(async res => {
-            //     if (res?.status == 200) {
-            //         this.packBasePath = source.basePath + packName + "/";
-            //         return await res.json() as IPackInfo;
-            //     }
-            // })
 
             const result = await this.getPackFile(FileType.PACKINFO, "", sourceBasePath + "/" + packName + "/");
 
             if (result) {
+                this.packBasePath = sourceBasePath + "/" + packName + "/";
                 return result;
             }
         }
@@ -72,6 +64,7 @@ export class Loader {
         }})()
     }
 
+    async getPackFile(type: FileType.PACKINFO, name?: string, basePath?: string): Promise<IPackInfo>;
     async getPackFile(type: FileType, name?: string, basePath?: string) {
         const path = this.getPackFilePath(type, name, basePath);
 
