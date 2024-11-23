@@ -15,6 +15,10 @@
         },
         "backgroundMusic": {
             "type": "string"
+        },
+
+        "pfv": {
+            "type": "number"
         }
     },
     "required": ["name", "defaultScene"]

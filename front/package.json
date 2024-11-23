@@ -3,5 +3,8 @@
   "devDependencies": {
     "@types/jquery": "^3.5.29",
     "typedoc": "^0.25.13"
+  },
+  "dependencies": {
+    "esbuild": "^0.24.0"
   }
 }

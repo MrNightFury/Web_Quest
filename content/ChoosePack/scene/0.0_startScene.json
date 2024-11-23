@@ -7,10 +7,13 @@
         {
             "text": "Ждать",
             "position": {"x": 200, "y": 450},
-            "interact": {
+            "interact": [{
                 "type": "changeScene",
                 "sceneId": "0.1_waited"
-            }
+            }, {
+                "type": "playSound",
+                "sound": "test.mp3"
+            }]
         }, {
             "text": "Пошарить руками",
             "position": {"x": 200, "y": 500},

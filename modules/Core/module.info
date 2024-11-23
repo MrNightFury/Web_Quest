@@ -1,0 +1,6 @@
+{
+    "name": "CoreModule",
+    "entryPoints": {
+        "deno": "./src/index.ts"
+    }
+}

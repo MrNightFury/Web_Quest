@@ -1,0 +1,1 @@
+export { CoreModule } from "./src/CoreModule.ts";

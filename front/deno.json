@@ -1,0 +1,23 @@
+{
+  "imports": {
+    "@webview/webview": "jsr:@webview/webview@^0.8.1"
+  },
+  "unstable": [
+    "sloppy-imports"
+  ],
+  "lint": {
+    "rules": {
+      "exclude": ["no-var", "no-sloppy-imports"]
+    }
+  },
+  "compilerOptions": {
+    "strict": true,
+    "lib": [
+      "deno.window", "dom"
+    ]
+  },
+  "tasks": {
+    "run": "deno run ./src/main.ts",
+    "build": "deno run --allow-all ./src/build.ts"
+  }
+}

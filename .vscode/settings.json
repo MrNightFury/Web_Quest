@@ -18,6 +18,11 @@
                 "content/*/pack.info"
             ],
             "url": "./.vscode/schemas/packinfo.json"
+        }, {
+            "fileMatch": [
+                "*/module.info"
+            ],
+            "url": "./.vscode/schemas/moduleinfo.json"
         }
     ]
 }

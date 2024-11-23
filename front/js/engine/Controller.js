@@ -35,8 +35,8 @@ export class Controller {
      * @returns
      */
     changeScene(name) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
             if (!name) {
                 if (!((_a = this.packInfo) === null || _a === void 0 ? void 0 : _a.defaultScene)) {
                     alert("Default scene didn't specified");
