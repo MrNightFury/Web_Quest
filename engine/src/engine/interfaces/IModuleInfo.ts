@@ -6,7 +6,8 @@ export interface IBaseModuleInfo {
         deno: string;
         browser: string;
     };
-    namespace?: string;
+    namespace: string;
+    dependencies?: string[];
 }
 
 export interface IModuleInfov1 extends IBaseModuleInfo {

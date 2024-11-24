@@ -1,5 +1,5 @@
 import { isDeno } from "../Environment.ts";
-import { FileType } from "engine/interfaces/PackFileTypes.ts";
+import { FileType, getFileExtension } from "engine/interfaces/PackFileTypes.ts";
 import type { IPackInfo } from "engine/interfaces/IPackInfo.ts";
 import type { IModuleInfo } from "engine/interfaces/IModuleInfo.ts";
 
@@ -46,7 +46,7 @@ export class Loader {
 
     async findModule(moduleName: string) {
         for (const source of this.moduleSources) {
-            const sourceBasePath = (source.type == SourceType.LOCAL ? "file://" + path.resolve(source.basePath) : source.basePath);
+            const sourceBasePath = source.basePath;
 
             const result = await this.getFileByPath(`${sourceBasePath}/${moduleName}/${FileType.MODULE_INFO}`,
                                                     FileType.MODULE_INFO) as IModuleInfo;
@@ -64,11 +64,23 @@ export class Loader {
             type: ENV.deno ? SourceType.LOCAL : SourceType.REMOTE
         });
 
-        this.moduleSources.clear();
+        // this.moduleSources.clear();
+        // console.log(import.meta.url + "/../../../modules/");
+        console.log(new URL("../../../modules/", import.meta.url).toString());
+
         this.moduleSources.add({
-            basePath: "../modules/",
+            // basePath: "../modules/",
+            basePath: new URL("../../../modules/", import.meta.url).toString(),
             type: ENV.deno ? SourceType.LOCAL : SourceType.REMOTE
         });
+    }
+
+    registerNamespace(name: string, path: string) {
+        if (this.namespaces.has(name)) {
+            console.error("Namespace already exists: " + name);
+            throw new Error("Namespace already exists: " + name);
+        }
+        this.namespaces.set(name, path);
     }
 
     // getPackFilePath(type: FileType, _name?: string, basePath?: string) {
@@ -151,10 +163,11 @@ export class Loader {
         }
     }
 
-    async getFile(namespace: string, type: FileType.PACK_INFO, name?: string): Promise<IPackInfo>;
-    async getFile(namespace: string, type: FileType.MODULE_INFO, name?: string): Promise<IModuleInfo>;
+    async getFile(namespace: string, type: FileType.PACK_INFO, name: undefined): Promise<IPackInfo>;
+    async getFile(namespace: string, type: FileType.MODULE_INFO, name: undefined): Promise<IModuleInfo>;
+    async getFile(namespace: string, type: FileType.HTML, name: string): Promise<string>;
     async getFile(namespace: string, type: FileType, name?: string) {
-        const path = this.getFilePath(namespace, type, name);
+        const path = this.getFilePath(namespace, type, name + getFileExtension(type));
         if (!path) {
             return;
         }

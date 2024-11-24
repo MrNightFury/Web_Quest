@@ -3,5 +3,8 @@
     "entryPoints": {
         "deno": "./src/index.ts"
     },
-    "namespace": "inventory"
+    "namespace": "inventory",
+    "dependencies": [
+        "CoreModule"
+    ]
 }

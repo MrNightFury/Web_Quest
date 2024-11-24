@@ -16,7 +16,7 @@
     ]
   },
   "tasks": {
-    "build": "tsc && deno run --allow-all ./build.ts"
+    "build": "deno run --allow-all ./switchExt.ts js && tsc && deno run --allow-all ./switchExt.ts ts"
   },
   "imports": {
     "engine/": "./../../engine/src/engine/",

@@ -25,6 +25,12 @@
             "items": {
                 "type": "string"
             }
+        },
+        "dependencies": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         }
     },
     "required": ["name", "entryPoints"]

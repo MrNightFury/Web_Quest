@@ -9,10 +9,8 @@ export enum Runtime {
     BROWSER = "Browser"
 }
 
-export interface ENV {
+export interface BaseENV {
     debug: boolean;
-
-    webview?: Window;
 
     deno: boolean;
     browser: boolean;
@@ -20,15 +18,30 @@ export interface ENV {
     baseImportPath: string;
 }
 
+export interface DenoENV extends BaseENV {
+    deno: true;
+
+    windowStarted: boolean;
+    webview: Window;
+}
+
+export interface BrowserENV extends BaseENV {
+    deno: false;
+}
+
+export type ENV = BrowserENV | DenoENV;
+
 export function setupEnv() {
     // @ts-ignore: 
     const isDeno = typeof Deno != "undefined";
+    // @ts-ignore:
     globalThis.ENV = {
         debug: true,
 
         deno: isDeno,
         browser: !isDeno,
         runtime: isDeno ? Runtime.DENO : Runtime.BROWSER,
+        windowStarted: false,
         baseImportPath: import.meta.url.replace(/main.[tj]s/g, "")
     }
 }

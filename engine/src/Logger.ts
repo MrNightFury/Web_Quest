@@ -1,27 +1,24 @@
+// deno-lint-ignore-file no-explicit-any
 export class Logger {
     label: string;
 
-    // deno-lint-ignore no-explicit-any
     constructor(cls: any) {
         this.label = cls.constructor.name;
 
-        // if (cls.prototype) {
-        //     this.label = cls.prototype.name
-        // }
         if ("id" in cls) {
             this.label += " " + cls.id;
         }
     }
     
-    log(message: string) {
-        console.log(`[${this.label}] ${message}`);
+    log(...args: any[]) {
+        console.log(`[${this.label}]`, ...args);
     }
 
-    warn(message: string) {
-        console.warn(`[${this.label}] ${message}`);
+    warn(...args: any[]) {
+        console.warn(`[${this.label}]`, ...args);
     }
 
-    error(message: string) {
-        console.error(`[${this.label}] ${message}`);
+    error(...args: any[]) {
+        console.error(`[${this.label}]`, ...args);
     }
 }

@@ -1,6 +1,8 @@
 import type { Loader } from "engine/Loader.ts";
 import { Module } from "engine/Modules/Module.ts";
 import { Logger } from "../../Logger.ts";
+import { FileType } from "engine/interfaces/PackFileTypes.ts";
+import { IModuleInfo } from "engine/interfaces/IModuleInfo.ts";
 
 
 // deno-lint-ignore no-explicit-any
@@ -34,14 +36,31 @@ export class ModulesManager {
         const modulePath = await this.loader.findModule(name);
         if (!modulePath) {
             this.logger.error("Module not found: " + name);
-            return;
+            throw new Error("Module not found: " + name);
         }
 
         this.logger.log("Loading module: " + name);
+
+        // Depency handle
+        const moduleInfo = await this.loader.getFileByPath(`${modulePath}/module.info`, FileType.MODULE_INFO) as IModuleInfo;
+        for (const dependency of moduleInfo.dependencies || []) {
+            if (!this.loadedModules.has(dependency)) {
+                await this.loadModule(dependency);
+            }
+        }
+
+        // Module import
         const module = await import(modulePath + `${ENV.deno ? "src" : "js"}/mod.ts`);
         for (const key in module) {
             if (isSubclass(module[key], Module)) {
-                const moduleInstance = new module[key]();
+                const moduleInstance = new module[key]() as Module;
+                moduleInstance.info = moduleInfo;
+                moduleInstance.basePath = modulePath;
+
+                if (moduleInfo.namespace) {
+                    this.loader.registerNamespace(moduleInfo.namespace, modulePath);
+                }
+                
                 await moduleInstance.load();
                 this.loadedModules.set(name, moduleInstance);
             }
@@ -50,7 +69,23 @@ export class ModulesManager {
 
     async loadModules(names: string[]) {
         for (const name of names) {
-            await this.loadModule(name);
+            try {
+                await this.loadModule(name);
+            } catch (e) {
+                this.logger.error("Error loading module: " + name);
+                throw e;
+            }
+        }
+        this.logger.log("Modules loaded.");
+        this.logger.log(this.loader.namespaces);
+    }
+
+    // deno-lint-ignore no-explicit-any
+    getModule<T extends Module>(ClassType: (new (...args: any[]) => T) | string): T | undefined {
+        if (typeof ClassType === "string") {
+            return this.loadedModules.get(ClassType) as T;
+        } else {
+            return this.loadedModules.get(ClassType.name) as T;
         }
     }
 }
