@@ -1,6 +1,6 @@
 {
   "unstable": [
-    "sloppy-imports"
+
   ],
   "lint": {
     "rules": {
@@ -17,7 +17,7 @@
   },
   "tasks": {
     "run": "deno run --allow-all ./src/main.ts",
-    "build": "tsc && deno run --allow-all ./build.ts"
+    "build": "deno run --allow-all ./switchExt.ts js && tsc && deno run --allow-all ./switchExt.ts ts"
   },
   "imports": {
     "@webview/webview": "jsr:@webview/webview@^0.8.1",
