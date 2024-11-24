@@ -38,7 +38,7 @@ export class ModulesManager {
         }
 
         this.logger.log("Loading module: " + name);
-        const module = await import(modulePath + "mod.ts");
+        const module = await import(modulePath + `${ENV.deno ? "src" : "js"}/mod.ts`);
         for (const key in module) {
             if (isSubclass(module[key], Module)) {
                 const moduleInstance = new module[key]();

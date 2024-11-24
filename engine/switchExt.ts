@@ -32,7 +32,7 @@ async function processDir(dir: string) {
 
             content = content.replaceAll(new RegExp(`(import .* from ['"].*)\.${d[arg]}(['"])`, "g"), `$1.${arg}$2`);
             content = content.replaceAll(new RegExp(`(import ['"].*)\.${d[arg]}(['"])`, "g"), `$1.${arg}$2`);
-            content = content.replaceAll(new RegExp(`(import\p*\\(.*\.)${d[arg]}(['"]\\))`, "g"), `$1${arg}$2`);
+            content = content.replaceAll(new RegExp(`(import\p*\\(.*\.)${d[arg]}(['"\`]\\))`, "g"), `$1${arg}$2`);
 
             await Deno.writeTextFile(filePath, content);
         }
