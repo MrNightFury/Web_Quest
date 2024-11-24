@@ -1,0 +1,7 @@
+{
+    "name": "BaseInventory",
+    "entryPoints": {
+        "deno": "./src/index.ts"
+    },
+    "namespace": "inventory"
+}

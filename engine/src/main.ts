@@ -1,18 +1,20 @@
-import { setupEnv } from "./Environment.js";
-import { Engine } from "engine/Engine.js";
+import { setupEnv } from "./Environment.ts";
+import { Engine } from "engine/Engine.ts";
+import { Logger } from "./Logger.ts";
 
-console.log("Setting up environment...");
+const logger = new Logger(new (class Main {})());
+
+logger.log("Setting up environment...");
 setupEnv();
 
-console.log("Starting engine...");
 const engine = new Engine();
 
-console.log("Loading pack...");
+logger.log("Loading pack...");
 
 if (ENV.deno) {
-    console.log("Running in Deno...");
+    logger.log("Running in Deno...");
 
-    const Window = (await import("./Window.js")).Window;
+    const Window = (await import("./Window.ts")).Window;
 
     ENV.webview = new Window(ENV.debug);
     ENV.webview.openLocal("index.html");
@@ -20,12 +22,12 @@ if (ENV.deno) {
 
     // webview.run();
 } else {
-    console.log("Running in browser...");
+    logger.log("Running in browser...");
 }
 
-await engine.loadPack("ChosePack");
+await engine.loadPack("DenoTestPack");
 
 if (ENV.deno) {
-    console.log("Running webview...");
+    logger.log("Running webview...");
     ENV.webview?.run();
 }
