@@ -1,6 +1,7 @@
-import { FileType } from "./interfaces/PackFileTypes.js";
-import { isDeno } from "../Environment.js";
-import type { IPackInfo } from "engine/interfaces/IPackInfo.js";
+import { isDeno } from "../Environment.ts";
+import { FileType } from "engine/interfaces/PackFileTypes.ts";
+import type { IPackInfo } from "engine/interfaces/IPackInfo.ts";
+import type { IModuleInfo } from "engine/interfaces/IModuleInfo.ts";
 
 if (isDeno()) {
     // @ts-ignore: 
@@ -18,11 +19,12 @@ export interface Source {
 }
 
 export class Loader {
-    // packName: string = "";
     packBasePath: string = "";
 
     packSources: Set<Source> = new Set();
     moduleSources: Set<Source> = new Set();
+
+    namespaces: Map<string, string> = new Map();
 
     constructor() {
         this.updateAvailableSources()
@@ -32,11 +34,25 @@ export class Loader {
         for (const source of this.packSources) {
             const sourceBasePath = (source.type == SourceType.LOCAL ? "file://" + path.resolve(source.basePath) : source.basePath);
 
-            const result = await this.getPackFile(FileType.PACKINFO, "", sourceBasePath + "/" + packName + "/");
+            const result = await this.getFileByPath(`${sourceBasePath}/${packName}/${FileType.PACK_INFO}`,
+                                                    FileType.PACK_INFO) as IPackInfo;
 
             if (result) {
                 this.packBasePath = sourceBasePath + "/" + packName + "/";
                 return result;
+            }
+        }
+    }
+
+    async findModule(moduleName: string) {
+        for (const source of this.moduleSources) {
+            const sourceBasePath = (source.type == SourceType.LOCAL ? "file://" + path.resolve(source.basePath) : source.basePath);
+
+            const result = await this.getFileByPath(`${sourceBasePath}/${moduleName}/${FileType.MODULE_INFO}`,
+                                                    FileType.MODULE_INFO) as IModuleInfo;
+
+            if (result) {
+                return sourceBasePath + "/" + moduleName + "/";
             }
         }
     }
@@ -55,37 +71,93 @@ export class Loader {
         });
     }
 
-    getPackFilePath(type: FileType, _name?: string, basePath?: string) {
-        const path = basePath ? basePath : this.packBasePath;
+    // getPackFilePath(type: FileType, _name?: string, basePath?: string) {
+    //     const path = basePath ? basePath : this.packBasePath;
 
-        return (() => {switch (type) {
-            case FileType.PACKINFO:
-                return path + "pack.info";
-        }})()
+    //     return (() => {switch (type) {
+    //         case FileType.PACKINFO:
+    //             return path + "pack.info";
+    //         case FileType.MODULE_INFO:
+    //             return path + "module.info";
+    //     }})()
+    // }
+
+    // async getFile(type: FileType, path: string) {
+    //     const result = await fetch(path).catch(_ => {
+    //         // console.error(err);
+    //     }).then(res => {
+    //         if (res?.status == 200) {
+    //             return res;
+    //         }
+    //     })
+
+    //     if (!result) {
+    //         console.error("File not found: " + path);
+    //         return;
+    //     }
+
+    //     switch (type) {
+    //         case FileType.PACKINFO:
+    //             return await result.json() as IPackInfo;
+    //         case FileType.MODULE_INFO:
+    //             return await result.json() as IModuleInfo;
+    //         default: 
+    //             return await result.text();
+    //     }
+    // }
+
+    // async getPackFile(type: FileType.PACKINFO, name?: string, basePath?: string): Promise<IPackInfo>;
+    // async getPackFile(type: FileType.MODULE_INFO, name?: string, basePath?: string): Promise<IModuleInfo>;
+    // async getPackFile(type: FileType, name?: string, basePath?: string) {
+    //     const path = this.getPackFilePath(type, name, basePath);
+    //     return await this.getFile(type, path);
+    // }
+
+    getFilePath(namespace: string, type: FileType, name?: string) {
+        const ns = this.namespaces.get(namespace);
+        if (!ns) {
+            console.error("Namespace not found: " + namespace);
+            return;
+        }
+        
+        return (() => {
+            switch (type) {
+                case FileType.PACK_INFO:
+                    return `${ns}/pack.info`;
+                case FileType.MODULE_INFO:
+                    return `${ns}/module.info`;
+                default:
+                    return `${ns}/${type}/${name}`;
+            }
+        })()
     }
 
-    async getPackFile(type: FileType.PACKINFO, name?: string, basePath?: string): Promise<IPackInfo>;
-    async getPackFile(type: FileType, name?: string, basePath?: string) {
-        const path = this.getPackFilePath(type, name, basePath);
-
-        const result = await fetch(path).catch(err => {
-            console.error(err);
-        }).then(async res => {
+    async getFileByPath(path: string, type: FileType) {
+        const result = await fetch(path).catch(_ => {
+            // console.error(err);
+        }).then(res => {
             if (res?.status == 200) {
-                return await res;
+                return res;
             }
         })
 
-        if (!result) {
-            console.error("File not found: " + path);
+        switch (type) {
+            case FileType.PACK_INFO:
+                return await result?.json() as IPackInfo;
+            case FileType.MODULE_INFO:
+                return await result?.json() as IModuleInfo;
+            default: 
+                return await result?.text();
+        }
+    }
+
+    async getFile(namespace: string, type: FileType.PACK_INFO, name?: string): Promise<IPackInfo>;
+    async getFile(namespace: string, type: FileType.MODULE_INFO, name?: string): Promise<IModuleInfo>;
+    async getFile(namespace: string, type: FileType, name?: string) {
+        const path = this.getFilePath(namespace, type, name);
+        if (!path) {
             return;
         }
-
-        switch (type) {
-            case FileType.PACKINFO:
-                return await result.json() as IPackInfo;
-            default: 
-                return await result.text();
-        }
+        return await this.getFileByPath(path, type);
     }
 }

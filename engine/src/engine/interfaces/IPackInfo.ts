@@ -1,5 +1,5 @@
 export interface IBasePackInfo {
-    pfv?: number;
+    pfv: number | undefined;
 
     name: string;
     defaultScene: string;
@@ -8,7 +8,7 @@ export interface IBasePackInfo {
 }
 
 export interface IPackInfov1old extends IBasePackInfo {
-    pfv: 0;
+    pfv: undefined;
 }
 
 export interface IPackInfov1 extends IBasePackInfo {

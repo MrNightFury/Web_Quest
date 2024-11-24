@@ -1,5 +1,6 @@
 export enum FileType {
-    PACKINFO = "pack.info"
+    PACK_INFO = "pack.info",
+    MODULE_INFO = "module.info",
 }
 
 export enum FileContentType {
@@ -9,7 +10,11 @@ export enum FileContentType {
 
 export function getFileContentType(type: FileType): FileContentType {
     switch (type) {
-        case FileType.PACKINFO:
+        case FileType.PACK_INFO:
+        case FileType.MODULE_INFO:
             return FileContentType.JSON;
+
+        default:
+            return FileContentType.TEXT;
     }
 }

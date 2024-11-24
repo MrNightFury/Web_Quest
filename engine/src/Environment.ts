@@ -1,4 +1,4 @@
-import { Window } from "./Window.js";
+import { Window } from "./Window.ts";
 
 declare global {
     var ENV: ENV;

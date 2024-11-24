@@ -19,6 +19,12 @@
 
         "pfv": {
             "type": "number"
+        },
+        "modules": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         }
     },
     "required": ["name", "defaultScene"]
